@@ -3,6 +3,8 @@ version: '3'
 services:
   db:
     image: postgres:latest
+    networks:
+      - geocolab_net
     ports:
       - "5435:5432"
     volumes:
@@ -16,6 +18,8 @@ services:
       dockerfile: ./deploy/backend/Dockerfile
     depends_on:
       - db
+    networks:
+      - geocolab_net
     volumes:
       - ./backend:/app/backend
       - ./static:/app/static
@@ -31,6 +35,8 @@ services:
       dockerfile: ./deploy/frontend/Dockerfile
     depends_on:
       - backend
+    networks:
+      - geocolab_net
     volumes:
       - ./frontend:/app/frontend
       - ./static:/app/static
@@ -39,6 +45,8 @@ services:
 
   rabbitmq:
     image: rabbitmq:management-alpine
+    networks:
+      - geocolab_net
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -47,6 +55,8 @@ services:
 
   redis:
     image: redis:alpine
+    networks:
+      - geocolab_net
     ports:
       - "6379:6379"
 
@@ -59,9 +69,30 @@ services:
     depends_on:
       - rabbitmq
       - redis
+    networks:
+      - geocolab_net
     volumes:
       - ./backend:/app/backend
 
+  nginx:
+    build:
+      context: .
+      dockerfile: deploy/nginx/Dockerfile
+    depends_on:
+      - backend
+      - frontend
+      - celery
+    networks:
+      geocolab_net:
+        ipv4_address: 10.20.30.40
+    ports:
+      - "80:80"
+
+networks:
+  geocolab_net:
+    ipam:
+      config:
+        - subnet: "10.20.30.1/24"
 
 volumes:
   local_db_data: { }
