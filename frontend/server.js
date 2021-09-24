@@ -26,7 +26,8 @@ server.get('*', async (req, res) => {
   res.end(html)
 })
 
+fs.openSync('/tmp/app-initialized', 'w');
+
 server.listen('/tmp/nginx.socket', function () {
     console.info(`server up`);
-    fs.openSync('/tmp/app-initialized', 'w');
 });
