@@ -1,0 +1,14 @@
+gunicorn
+celery[redis]
+flask-jwt-extended
+flask-mail
+flask-marshmallow
+flask-migrate
+flask-restful
+flask-sqlalchemy
+flask
+flower
+marshmallow-sqlalchemy
+psycopg2
+python-dotenv
+wheel
