@@ -8,9 +8,9 @@ setup:
       as: RESULTS
 build:
   docker:
-    web: deploy/nginx/Dockerfile
-    frontend: deploy/frontend/Dockerfile
+    web: deploy/frontend/Dockerfile
     backend: deploy/backend/Dockerfile
     tasks: deploy/celery/Dockerfile
 run:
+  web: bin/start-nginx yarn start
   api: gunicorn -b 0.0.0.0:5000 -w 4 backend.wsgi:app
