@@ -1,6 +1,6 @@
 {
   "name": "geocolab",
-  "version": "0.1",
+  "version": "0.0.1",
   "description": "Proof of concept app for the NERC digital technologies sprint.",
   "main": "frontend/server.js",
   "repository": "https://github.com/geocolab",
