@@ -1,4 +1,4 @@
-from geocolab import create_app
+from backend.geocolab import create_app
 
 app = create_app()
 

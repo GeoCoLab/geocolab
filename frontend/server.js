@@ -1,6 +1,7 @@
 const { createSSRApp } = require('vue')
 const { renderToString } = require('@vue/server-renderer')
 const server = require('express')()
+const fs = require('fs');
 
 server.get('*', async (req, res) => {
   const app = createSSRApp({
@@ -25,4 +26,7 @@ server.get('*', async (req, res) => {
   res.end(html)
 })
 
-server.listen(8080)
+server.listen('/tmp/nginx.socket', function () {
+    console.info(`server up`);
+    fs.openSync('/tmp/app-initialized', 'w');
+});

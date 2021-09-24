@@ -1,8 +1,8 @@
 FROM node:latest
 
-COPY ./frontend/package.json /app/frontend/package.json
-COPY ./frontend/yarn.lock /app/frontend/yarn.lock
+COPY ./package.json /app/package.json
+COPY ./yarn.lock /app/yarn.lock
 
-WORKDIR /app/frontend
+WORKDIR /app
 
 CMD yarn start

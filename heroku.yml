@@ -11,6 +11,8 @@ build:
     web: deploy/frontend/Dockerfile
     backend: deploy/backend/Dockerfile
     tasks: deploy/celery/Dockerfile
+  config:
+    NODE_PATH: frontend/
 run:
   web: bin/start-nginx yarn start
-  api: gunicorn -b 0.0.0.0:5000 -w 4 backend.wsgi:app
+  api: gunicorn -b 0.0.0.0:5000 -w 4 wsgi:app

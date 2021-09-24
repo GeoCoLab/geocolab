@@ -2,12 +2,12 @@
   "name": "geocolab",
   "version": "0.1",
   "description": "Proof of concept app for the NERC digital technologies sprint.",
-  "main": "server.js",
+  "main": "frontend/server.js",
   "repository": "https://github.com/geocolab",
   "author": "GeoCoLab",
   "license": "GPL-3.0-or-later",
   "scripts": {
-    "start": "node server.js"
+    "start": "node frontend/server.js"
   },
   "dependencies": {
     "tailwindcss": "^2.2.15",
