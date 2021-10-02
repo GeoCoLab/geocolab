@@ -1,1 +1,1 @@
-web: gunicorn -b 0.0.0.0 wsgi:app
+web: geocolab run -h 0.0.0.0

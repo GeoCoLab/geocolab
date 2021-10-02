@@ -9,9 +9,17 @@ URL = 'https://github.com/geocolab'
 EMAIL = 'geocolab.app@gmail.com'
 AUTHOR = 'GeoCoLab'
 VERSION = '1.0.0'
-
-with open('requirements.txt', 'r') as req_file:
-    REQUIRED = [r.strip() for r in req_file.readlines()]
+REQUIRED = ['gunicorn',
+            'celery[redis]',
+            'flask-jwt-extended',
+            'flask-mail',
+            'flask-migrate',
+            'flask-restful',
+            'flask-sqlalchemy',
+            'flask',
+            'flower',
+            'psycopg2',
+            'python-dotenv']
 
 setup(
     name=NAME,
@@ -30,4 +38,4 @@ setup(
         ],
     },
     license='GPL-3.0-or-later'
-    )
+)
