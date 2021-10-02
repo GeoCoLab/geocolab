@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 
-root = os.environ.get('ROOT_DIR', os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+root = os.environ.get('ROOT_DIR', os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 load_dotenv(os.path.join(root, '.env'))
 
