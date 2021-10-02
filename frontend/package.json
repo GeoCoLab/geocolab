@@ -1,0 +1,25 @@
+{
+  "name": "geocolab",
+  "version": "1.0.0",
+  "description": "GeoCoLab",
+  "main": "src/templates/index.html",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "scripts": {
+    "clean": "rm -rf build",
+    "watch": "snowpack build --watch",
+    "build": "snowpack build"
+  },
+  "dependencies": {
+    "tailwindcss": "^2.2.16"
+  },
+  "devDependencies": {
+    "@snowpack/plugin-postcss": "^1.4.1",
+    "@snowpack/plugin-sass": "^1.4.0",
+    "autoprefixer": "^10.3.6",
+    "postcss": "^8.3.8",
+    "postcss-cli": "^9.0.1",
+    "snowpack": "^3.8.8"
+  }
+}

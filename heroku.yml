@@ -2,17 +2,8 @@ setup:
   addons:
     - plan: heroku-postgresql
       as: DATABASE
-    - plan: cloudamqp
-      as: BROKER
-    - plan: heroku-redis
-      as: RESULTS
 build:
   docker:
-    web: deploy/frontend/Dockerfile
-    backend: deploy/backend/Dockerfile
-    tasks: deploy/celery/Dockerfile
-  config:
-    NODE_PATH: frontend/
+    web: deploy/backend/Dockerfile
 run:
-  web: bin/start-nginx yarn start
-  api: gunicorn -b 0.0.0.0:5000 -w 4 wsgi:app
+  web: gunicorn wsgi:app

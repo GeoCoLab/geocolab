@@ -1,33 +1,25 @@
 version: '3'
 
-services:
-  db:
-    image: postgres:latest
-    networks:
-      - geocolab_net
-    ports:
-      - "5435:5432"
-    volumes:
-      - local_db_data:/var/lib/postgresql/data
-    env_file:
-      - ./deploy/db/.env
+volumes:
+  local_db_data: {}
+  local_db_data_backups: {}
 
+services:
   backend:
     build:
       context: .
       dockerfile: ./deploy/backend/Dockerfile
     depends_on:
       - db
-    networks:
-      - geocolab_net
     volumes:
       - ./backend:/app/backend
+      - ./frontend:/app/frontend
       - ./static:/app/static
     env_file:
       - ./deploy/backend/.env
       - ./deploy/db/.env
     ports:
-      - "5000:5000"
+      - "8000:8000"
 
   frontend:
     build:
@@ -35,64 +27,18 @@ services:
       dockerfile: ./deploy/frontend/Dockerfile
     depends_on:
       - backend
-    networks:
-      - geocolab_net
     volumes:
       - ./frontend:/app/frontend
       - ./static:/app/static
     ports:
       - "8080:8080"
 
-  rabbitmq:
-    image: rabbitmq:management-alpine
-    networks:
-      - geocolab_net
+  db:
+    image: postgres:latest
     ports:
-      - "15672:15672"
-      - "5672:5672"
+      - "5435:5432"
     volumes:
-      - ./deploy/rabbitmq:/etc/rabbitmq
-
-  redis:
-    image: redis:alpine
-    networks:
-      - geocolab_net
-    ports:
-      - "6379:6379"
-
-  celery:
-    build:
-      context: .
-      dockerfile: deploy/celery/Dockerfile
+      - local_db_data:/var/lib/postgresql/data
+      - local_db_data_backups:/backups
     env_file:
-      - deploy/backend/.env
-    depends_on:
-      - rabbitmq
-      - redis
-    networks:
-      - geocolab_net
-    volumes:
-      - ./backend:/app/backend
-
-  nginx:
-    build:
-      context: .
-      dockerfile: deploy/nginx/Dockerfile
-    depends_on:
-      - backend
-      - frontend
-      - celery
-    networks:
-      geocolab_net:
-        ipv4_address: 10.20.30.40
-    ports:
-      - "80:80"
-
-networks:
-  geocolab_net:
-    ipam:
-      config:
-        - subnet: "10.20.30.1/24"
-
-volumes:
-  local_db_data: { }
+      - ./deploy/db/.env

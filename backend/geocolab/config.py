@@ -15,7 +15,8 @@ class Config(object):
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET')
 
     ROOT_DIR = root
-    STATIC_DIR = os.environ.get('STATIC_DIR', os.path.join(root, 'static'))
+    STATIC_DIR = os.environ.get('STATIC_DIR', os.path.join(root, 'frontend', 'static'))
+    TEMPLATE_DIR = os.environ.get('TEMPLATE_DIR', os.path.join(STATIC_DIR, 'templates'))
 
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql+psycopg2://')
     SQLALCHEMY_TRACK_MODIFICATIONS = False

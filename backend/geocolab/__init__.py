@@ -1,11 +1,11 @@
 from flask import Flask
-from geocolab.config import Config
-from geocolab.extensions import db, migrate, jwt, mail
-from geocolab import tasks
+from .config import Config
+from .extensions import db, migrate, jwt, mail
+from . import tasks
 
 
 def init(return_celery=False):
-    app = Flask(__name__, static_folder=Config.STATIC_DIR)
+    app = Flask(__name__, static_folder=Config.STATIC_DIR, template_folder=Config.TEMPLATE_DIR, static_url_path='/static/')
     app.config.from_object(Config)
 
     db.init_app(app)

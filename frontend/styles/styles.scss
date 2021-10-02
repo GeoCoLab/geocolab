@@ -1,0 +1,36 @@
+:root {
+  --c1-lightest: #FCFAF8;
+  --c1-light: #E2D1CF;
+  --c1: #9e7578;
+  --c1-dark: #564345;
+  --c1-darkest: #1C1717;
+  --c2-light: #B6FBFB;
+  --c2: #28BDBD;
+  --c2-dark: #044349;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// VARIABLES ===========================================================================================================
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@600|Open+Sans');
+
+$body-font: 'Open Sans', sans-serif;
+$title-font: 'Be Vietnam Pro', serif;
+
+$primary-lightest: var(--c1-lightest);
+$primary-light: var(--c1-light);
+$primary: var(--c1);
+$primary-dark: var(--c1-dark);
+$primary-darkest: var(--c1-darkest);
+$secondary-light: var(--c2-light);
+$secondary: var(--c2);
+$secondary-dark: var(--c2-dark);
+// =====================================================================================================================
+
+body {
+  background-color: $primary-lightest;
+  color: $primary-darkest;
+  font-family: $body-font;
+}

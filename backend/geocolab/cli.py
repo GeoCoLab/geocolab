@@ -1,7 +1,7 @@
 import click
 from flask.cli import FlaskGroup
-from geocolab.extensions import db
-from geocolab import create_app
+from .extensions import db
+from . import create_app
 
 
 def create_cli_app(info):

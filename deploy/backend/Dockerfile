@@ -8,12 +8,13 @@ RUN apt-get update \
   postgresql-client
 
 COPY ./deploy/backend/entrypoint /entrypoint
-COPY ./backend /app/backend
+COPY . /app
 
-WORKDIR /app/backend
+WORKDIR /app
 
 RUN python setup.py develop
 
 ENTRYPOINT ["/bin/bash", "/entrypoint"]
 
-CMD flask run --host 0.0.0.0
+CMD flask run --host 0.0.0.0 --port 8000
+

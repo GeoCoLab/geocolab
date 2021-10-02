@@ -12,7 +12,6 @@ done
 
 echo "PostgreSQL started"
 
-flask db init
 flask db upgrade
 
 exec "$@"
