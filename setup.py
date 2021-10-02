@@ -34,7 +34,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'geocolab=app.backend.geocolab.cli:cli'
+            'geocolab=backend.geocolab.cli:cli'
         ],
     },
     license='GPL-3.0-or-later'
