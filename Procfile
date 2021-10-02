@@ -1,1 +1,1 @@
-web: geocolab run -h 0.0.0.0 -p $PORT
+web: gunicorn -b 0.0.0.0:$PORT wsgi:app
