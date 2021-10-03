@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='media/apple-touch-icon.png') }}">
+  <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='media/apple-touch-icon.png') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}" />
+  {% block stylesheets %}
+    {% if local_sheets %}
+      {% for filepath in local_sheets %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style/' + filepath) }}">
+      {% endfor %}
+    {% endif %}
+  {% endblock %}
+  <title>GeoCoLab</title>
+</head>
+<body>
+{% include 'snippets/nav.html' %}
+<div class="w-full px-10 py-1 grid items-center" id="header" title="Photo by Max van den Oetelaar on Unsplash">
+  <div class="flex flex-col container">
+    <h1 class="site-title font-display font-bold text-primary-lightest">GeoCoLab</h1>
+    <span
+        class="site-subtitle text-primary-light">Matching access to analytical facilities with underserved researchers</span>
+  </div>
+</div>
+<div class="container mx-auto p-10">
+  {% block content %}
+    <p>If you can see this, it means I've forgotten to do something.</p>
+  {% endblock %}
+</div>
+
+</body>
+</html>

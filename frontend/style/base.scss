@@ -1,0 +1,105 @@
+:root {
+  --c1-lightest: #FCFAF8;
+  --c1-light: #E2D1CF;
+  --c1: #9e7578;
+  --c1-dark: #564345;
+  --c1-darkest: #1C1717;
+  --c2-light: #B6FBFB;
+  --c2: #28BDBD;
+  --c2-dark: #168083;
+  --c2-darkest: #044349;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// VARIABLES ===========================================================================================================
+@import url('https://fonts.googleapis.com/css2?family=Rubik&family=Roboto:wght@400;700');
+
+$body-font: 'Rubik', sans-serif;
+$title-font: 'Roboto', sans-serif;
+
+$primary-lightest: var(--c1-lightest);
+$primary-light: var(--c1-light);
+$primary: var(--c1);
+$primary-dark: var(--c1-dark);
+$primary-darkest: var(--c1-darkest);
+$secondary-light: var(--c2-light);
+$secondary: var(--c2);
+$secondary-dark: var(--c2-dark);
+$secondary-darkest: var(--c2-darkest);
+// =====================================================================================================================
+
+// GENERAL ===========================================================
+body {
+  background-color: $primary-lightest;
+  color: $primary-darkest;
+  font-family: $body-font;
+}
+
+a {
+  color: $secondary-dark;
+
+  &:hover {
+    border-bottom: 2px solid $primary;
+  }
+}
+
+// SPECIFIC ELEMENTS =================================================
+#header {
+  background-image: url('/static/media/max-van-den-oetelaar-cAq3crYmgno-unsplash.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  height: 100px;
+  position: relative;
+  border-top: 2px solid $primary-dark;
+  border-bottom: 2px solid $primary-dark;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, $primary-darkest, transparent);
+    content: '';
+  }
+
+  & > * {
+    // this keeps the text on top of the gradient
+    position: relative;
+  }
+
+  & .site-title {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  & .site-subtitle {
+    // by default, don't display the subtitle
+    display: none;
+    line-height: 1;
+  }
+}
+
+.nav-item {
+  color: $primary-darkest;
+
+  &:hover {
+    background-color: $primary-dark;
+    color: $primary-lightest;
+    transition: all .2s;
+  }
+
+  &--active {
+    border-bottom: 2px solid $primary;
+  }
+}
+
+#page-nav {
+  grid-template-areas: 'logo nav auth';
+  grid-template-columns: auto 1fr auto;
+  grid-gap: 1em;
+}

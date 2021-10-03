@@ -4,8 +4,8 @@ export default {
     mount: {
         media: { url: '/media', static: true },
         src: { url: '/src' },
-        templates: { url: '/templates' },
-        styles: { url: '/css' }
+        templates: { url: '/templates', static: true },
+        style: { url: '/style' }
     },
     devOptions: {
         tailwindConfig: './tailwind.config.js',

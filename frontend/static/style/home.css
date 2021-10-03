@@ -1,0 +1,16 @@
+#header {
+  height: 200px;
+}
+#header .site-subtitle {
+  display: block;
+  font-size: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  #header .site-title {
+    font-size: 4.5rem;
+  }
+  #header .site-subtitle {
+    font-size: 1.5rem;
+  }
+}

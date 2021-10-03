@@ -5,8 +5,8 @@ module.exports = {
     theme   : {
         extend    : {},
         fontFamily: {
-            display: ['"Be Vietnam Pro"', 'system-ui', 'serif'],
-            body   : ['"Open Sans"', 'system-ui', 'sans-serif'],
+            display: ['"Roboto"', 'sans-serif'],
+            body   : ['"Rubik"', 'sans-serif'],
         },
         colors: {
             primary: {
@@ -19,7 +19,8 @@ module.exports = {
             secondary: {
                 light: 'var(--c2-light)',
                 DEFAULT: 'var(--c2)',
-                dark: 'var(--c2-dark)'
+                dark: 'var(--c2-dark)',
+                darkest: 'var(--c2-darkest)'
             }
         }
     },

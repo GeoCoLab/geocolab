@@ -1,0 +1,15 @@
+{% macro nav_item(endpoint, page_title, use_blueprint=False) -%}
+  {% set matches = (request.blueprint == endpoint.split('.')[0]) if use_blueprint
+      else (request.endpoint == endpoint) %}
+  <li><a class="px-2 py-1 mx-1 nav-item{{ ' nav-item--active' if matches else '' }}"
+         href="{{ url_for(endpoint) }}">{{ page_title }}</a></li>
+{% endmacro -%}
+
+<nav class="p-4 w-full grid items-center" id="page-nav">
+  <img src="{{ url_for('static', filename='media/logo.png') }}" alt="The GeoCoLab logo" class="h-6" id="nav-icon">
+  <ul class="flex" id="nav-links">
+    {{ nav_item('home.index', 'Home') }}
+    {{ nav_item('home.about', 'About') }}
+  </ul>
+  <span id="nav-auth">Login</span>
+</nav>
