@@ -1,4 +1,22 @@
-// BREAKPOINTS ===========================================================================
+// FONTS =============================================================
+@import url('https://fonts.googleapis.com/css2?family=Rubik&family=Roboto:wght@400;700');
+
+$body-font: 'Rubik', sans-serif;
+$title-font: 'Roboto', sans-serif;
+
+// COLOURS ===========================================================
+
+$primary-lightest: var(--c1-lightest);
+$primary-light: var(--c1-light);
+$primary: var(--c1);
+$primary-dark: var(--c1-dark);
+$primary-darkest: var(--c1-darkest);
+$secondary-light: var(--c2-light);
+$secondary: var(--c2);
+$secondary-dark: var(--c2-dark);
+$secondary-darkest: var(--c2-darkest);
+
+// BREAKPOINTS =======================================================
 // standard breakpoints from tailwind
 // (https://tailwindcss.com/docs/breakpoints), just for use in SCSS
 $break-sm: 640px;

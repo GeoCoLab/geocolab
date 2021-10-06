@@ -446,18 +446,18 @@ textarea {
 
 input::-moz-placeholder, textarea::-moz-placeholder {
   opacity: 1;
-  color: #a1a1aa;
+  color: #9ca3af;
 }
 
 input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   opacity: 1;
-  color: #a1a1aa;
+  color: #9ca3af;
 }
 
 input::placeholder,
 textarea::placeholder {
   opacity: 1;
-  color: #a1a1aa;
+  color: #9ca3af;
 }
 
 button,
@@ -621,6 +621,9 @@ video {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
 }
+.mt-8{
+  margin-top: 2rem;
+}
 .block{
   display: block;
 }
@@ -636,14 +639,26 @@ video {
 .w-full{
   width: 100%;
 }
+.auto-cols-auto{
+  grid-auto-columns: auto;
+}
+.grid-flow-col{
+  grid-auto-flow: column;
+}
 .flex-col{
   flex-direction: column;
 }
 .items-center{
   align-items: center;
 }
+.gap-4{
+  gap: 1rem;
+}
 .p-10{
   padding: 2.5rem;
+}
+.p-2{
+  padding: 0.5rem;
 }
 .p-4{
   padding: 1rem;
@@ -660,6 +675,9 @@ video {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
+.text-center{
+  text-align: center;
+}
 .font-display{
   font-family: "Roboto", sans-serif;
 }
@@ -671,6 +689,10 @@ video {
 }
 .text-primary-light{
   color: var(--c1-light);
+}
+.text-red-700{
+  --tw-text-opacity: 1;
+  color: rgba(185, 28, 28, var(--tw-text-opacity));
 }
 body {
   background-color: var(--c1-lightest);

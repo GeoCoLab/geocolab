@@ -11,15 +11,16 @@ AUTHOR = 'GeoCoLab'
 VERSION = '1.0.0'
 REQUIRED = ['gunicorn',
             'celery[redis]',
-            'flask-jwt-extended',
+            'flask-wtf',
+            'flask-login',
             'flask-mail',
             'flask-migrate',
-            'flask-restful',
             'flask-sqlalchemy',
             'flask',
-            'flower',
+            'geonamescache',
             'psycopg2',
-            'python-dotenv']
+            'passlib[argon2]',
+            'wheel']
 
 setup(
     name=NAME,

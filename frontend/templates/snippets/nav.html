@@ -2,7 +2,7 @@
   {% set matches = (request.blueprint == endpoint.split('.')[0]) if use_blueprint
       else (request.endpoint == endpoint) %}
   <li><a class="px-2 py-1 mx-1 nav-item{{ ' nav-item--active' if matches else '' }}"
-         href="{{ url_for(endpoint) }}">{{ page_title }}</a></li>
+         href="{{ url_for(endpoint) if endpoint else '#' }}">{{ page_title }}</a></li>
 {% endmacro -%}
 
 <nav class="p-4 w-full grid items-center" id="page-nav">
@@ -11,5 +11,24 @@
     {{ nav_item('home.index', 'Home') }}
     {{ nav_item('home.about', 'About') }}
   </ul>
-  <span id="nav-auth">Login</span>
+  <ul class="flex" id="nav-auth">
+    {% if current_user.is_authenticated %}
+      {% if current_user.has_pending_applications %}
+        {{ nav_item(None, 'Applications') }}
+      {% endif %}
+      {% if current_user.is_org_manager %}
+        {{ nav_item(None, 'Organisations') }}
+      {% endif %}
+      {% if current_user.is_facility_manager %}
+        {{ nav_item(None, 'Facilities') }}
+      {% endif %}
+      {% if current_user.is_admin %}
+        {{ nav_item(None, 'Admin') }}
+      {% endif %}
+      {{ nav_item('auth.logout', 'Logout') }}
+    {% else %}
+      {{ nav_item('auth.login', 'Login') }}
+      {{ nav_item('auth.register', 'Register') }}
+    {% endif %}
+  </ul>
 </nav>

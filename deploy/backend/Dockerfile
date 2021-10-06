@@ -14,6 +14,8 @@ WORKDIR /app
 
 RUN python setup.py develop
 
+WORKDIR /app/backend
+
 ENTRYPOINT ["/bin/bash", "/entrypoint"]
 
 CMD flask run --host 0.0.0.0 --port 8000

@@ -1,0 +1,11 @@
+from ..extensions import db
+
+org_manager = db.Table('org_manager',
+                       db.Column('org_id', db.Integer, db.ForeignKey('org.id'), primary_key=True),
+                       db.Column('manager_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+                       )
+
+facility_manager = db.Table('facility_manager',
+                            db.Column('facility_id', db.Integer, db.ForeignKey('facility.id'), primary_key=True),
+                            db.Column('manager_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+                            )

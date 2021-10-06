@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% set local_sheets=['form.css'] %}
+
+{% block content %}
+  <form method="post" action="{{ url_for('auth.login') }}" class="form mx-auto">
+    {{ form.csrf_token }}
+    {% if errors %}
+      <div class="form-errors">
+        {% for error in errors %}
+          <span class="font-bold text-red-700">{{ error }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="form-row">
+      {{ form.email.label }}
+      {{ form.email(class_='form-input') }}
+    </div>
+
+    <div class="form-row">
+      {{ form.password.label }}
+      {{ form.password(class_='form-input') }}
+    </div>
+
+    <div class="form-footer">
+      <div class="grid grid-flow-col gap-4 auto-cols-auto items-center">
+        {{ form.remember.label }}
+        {{ form.remember() }}
+      </div>
+      <input type="submit" value="Login" class="p-2">
+    </div>
+
+  </form>
+  <div class="text-center mt-8">Need an account? <a href="{{ url_for('auth.register') }}">Register here</a>.</div>
+{% endblock %}
