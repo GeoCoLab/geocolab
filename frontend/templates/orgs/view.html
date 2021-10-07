@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% set local_sheets=['table.css'] %}
+
+{% block content %}
+  <div class="flex items-center">
+    <h2 class="text-primary-dark flex-grow">{{ org.name }}</h2>
+    {% if org.can_edit %}
+      <a href="{{ url_for('orgs.edit', org_id=org.id) }}">
+        <i class="fa-solid fa-pencil mr-2"></i>
+        <span>Edit</span>
+      </a>
+    {% endif %}
+  </div>
+  <div class="detail-container mb-8">
+    <div class="detail-row">
+      <span class="detail-row-header">ROR ID</span>
+      <span>{{ org.ror_id }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-row-header">Location</span>
+      <span>{{ org.country|country_name }}</span>
+    </div>
+  </div>
+  <h3>Facilities</h3>
+  {% for fac in org.facilities %}
+    <p>{{ fac.name }}</p>
+  {% endfor %}
+  {% if org.can_edit %}
+  <h3>Managers</h3>
+  {% for manager in org.managers %}
+    <p>{{ manager.name }}</p>
+  {% endfor %}
+  {% endif %}
+{% endblock %}

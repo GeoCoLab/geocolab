@@ -30,7 +30,7 @@ def login():
         else:
             login_user(user, remember=remember)
             return redirect(url_for('home.index'))
-    return render_template('login.html', form=form, errors=errors)
+    return render_template('user/login.html', form=form, errors=errors)
 
 
 @bp.route('/register', methods=['GET', 'POST'])
@@ -49,7 +49,8 @@ def register():
             db.session.commit()
             login_user(new_user, remember=False)
             return redirect(url_for('home.index'))
-    return render_template('register.html', form=form, errors=errors)
+
+    return render_template('user/register.html', form=form, errors=errors)
 
 
 @bp.route('/logout')

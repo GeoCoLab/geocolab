@@ -10,17 +10,21 @@
   <ul class="flex" id="nav-links">
     {{ nav_item('home.index', 'Home') }}
     {{ nav_item('home.about', 'About') }}
+    {% if current_user.is_authenticated %}
+      {{ nav_item('apps.new', 'Apply for access') }}
+      {{ nav_item('orgs.new', 'Offer services') }}
+    {% endif %}
   </ul>
   <ul class="flex" id="nav-auth">
     {% if current_user.is_authenticated %}
-      {% if current_user.has_pending_applications %}
-        {{ nav_item(None, 'Applications') }}
+      {% if current_user.has_pending_applications or current_user.is_admin %}
+        {{ nav_item('apps.manage', 'Applications') }}
       {% endif %}
-      {% if current_user.is_org_manager %}
-        {{ nav_item(None, 'Organisations') }}
+      {% if current_user.is_org_manager or current_user.is_admin %}
+        {{ nav_item('orgs.manage', 'Organisations') }}
       {% endif %}
-      {% if current_user.is_facility_manager %}
-        {{ nav_item(None, 'Facilities') }}
+      {% if current_user.is_facility_manager or current_user.is_admin %}
+        {{ nav_item('facs.manage', 'Facilities') }}
       {% endif %}
       {% if current_user.is_admin %}
         {{ nav_item(None, 'Admin') }}

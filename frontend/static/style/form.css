@@ -17,10 +17,12 @@
   grid-column: inputs;
 }
 .form .form-row .form-input {
-  height: 2em;
   border-radius: 5px;
   border: 1px solid var(--c1-dark);
   padding: 5px;
+}
+.form .form-row .form-single-line {
+  height: 2em;
 }
 .form .form-footer {
   grid-column: 1/span 2;
@@ -38,4 +40,5 @@
 }
 .form .form-errors {
   grid-column: inputs;
+  margin-bottom: -10px;
 }

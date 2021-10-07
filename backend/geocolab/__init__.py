@@ -1,6 +1,6 @@
 from flask import Flask
 
-from . import tasks
+from . import tasks, utils
 from .config import Config
 from .extensions import db, migrate, login_manager, mail, csrf
 
@@ -17,6 +17,7 @@ def init(return_celery=False):
     mail.init_app(app)
     csrf.init_app(app)
     celery = tasks.init_app(app)
+    utils.init_app(app)
 
     from . import routes, models
     routes.init_app(app)

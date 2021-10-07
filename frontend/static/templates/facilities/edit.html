@@ -1,0 +1,11 @@
+{% extends 'bases/form.html' %}
+
+{% set form_action = url_for('facs.edit', facility_id=facility_id) %}
+
+{% block fields %}
+  {{ form_row('name') }}
+  {{ form_row('analysis', class_='form-input', size=5) }}
+  {{ form_row('access_slots', min=min_slots or 1, value=default_slots or 1) }}
+  {{ form_row('notes', class_='form-input') }}
+  {{ form_row('org') }}
+{% endblock %}

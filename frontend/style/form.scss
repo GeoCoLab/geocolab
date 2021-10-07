@@ -20,10 +20,13 @@
     }
 
     & .form-input {
-      height: 2em;
       border-radius: 5px;
       border: 1px solid $primary-dark;
       padding: 5px;
+    }
+
+    & .form-single-line {
+      height: 2em;
     }
   }
 
@@ -33,7 +36,7 @@
     grid-template-columns: auto 1fr;
     align-items: center;
 
-    & input[type="submit"] {
+    & input[type='submit'] {
       padding: 0.5em 1em;
       border-radius: 5px;
       background-color: $primary-dark;
@@ -45,5 +48,6 @@
 
   & .form-errors {
     grid-column: inputs;
+    margin-bottom: -10px;
   }
 }

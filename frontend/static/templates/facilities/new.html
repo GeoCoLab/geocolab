@@ -1,0 +1,20 @@
+{% extends 'bases/form.html' %}
+
+{% set submit_text = 'Create' %}
+
+{% block fields %}
+  {{ form_row('name') }}
+  {{ form_row('analysis', class_='form-input', size=5) }}
+  {{ form_row('access_slots', min=1) }}
+  {{ form_row('notes', class_='form-input') }}
+
+  <div class="form-row">
+    {{ form.org.label }}
+    {% if form.org.predefined %}
+      <input type="hidden" name="{{ form.org.name }}" id="{{ form.org.id }}" value="{{ form.org.object_data }}">
+      <b>{{ form.org.text }}</b>
+    {% else %}
+      {{ form.org(class_='form-input form-single-line') }}
+    {% endif %}
+  </div>
+{% endblock %}

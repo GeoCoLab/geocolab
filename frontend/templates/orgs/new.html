@@ -3,7 +3,7 @@
 {% set local_sheets=['form.css'] %}
 
 {% block content %}
-  <form method="post" action="{{ url_for('auth.register') }}" class="form mx-auto">
+  <form method="post" action="{{ url_for('orgs.new') }}" class="form mx-auto">
     {{ form.csrf_token }}
     {% if errors %}
       <div class="form-errors">
@@ -14,28 +14,23 @@
     {% endif %}
 
     <div class="form-row">
-      {{ form.email.label }}
-      {{ form.email(class_='form-input') }}
-    </div>
-
-    <div class="form-row">
-      {{ form.password.label }}
-      {{ form.password(class_='form-input') }}
+      <span><a href="https://ror.org">ROR</a> ID</span>
+      {{ form.ror_id(class_='form-input form-single-line') }}
     </div>
 
     <div class="form-row">
       {{ form.name.label }}
-      {{ form.name(class_='form-input') }}
+      {{ form.name(class_='form-input form-single-line') }}
     </div>
 
     <div class="form-row">
       {{ form.country.label }}
-      {{ form.country(class_='form-input') }}
+      {{ form.country(class_='form-input form-single-line') }}
     </div>
 
     <div class="form-footer">
-      <input type="submit" value="Register" class="p-2">
+      <input type="submit" value="Create" class="p-2">
     </div>
+
   </form>
-  <div class="text-center mt-8">Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a>.</div>
 {% endblock %}

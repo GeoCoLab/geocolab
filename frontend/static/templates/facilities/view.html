@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% set local_sheets=['table.css'] %}
+
+{% block content %}
+  <div class="flex items-center">
+    <h2 class="text-primary-dark flex-grow">{{ facility.name }}</h2>
+    {% if facility.can_edit %}
+      <a href="{{ url_for('facs.edit', facility_id=facility.id) }}">
+        <i class="fa-solid fa-pencil mr-2"></i>
+        <span>Edit</span>
+      </a>
+    {% endif %}
+  </div>
+  <div class="detail-container mb-8">
+    <div class="detail-row">
+      <span class="detail-row-header">Org</span>
+      <span>{{ facility.org.name }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-row-header">Notes</span>
+      <span>{{ facility.notes }}</span>
+    </div>
+  </div>
+
+  <h3>Available analyses</h3>
+  <div class="detail-container mb-8">
+    {% for analysis in facility.analyses %}
+      <div class="detail-row">
+        <span class="detail-row-header">{{ analysis.name }}</span>
+        <div class="grid">
+          <em>{{ analysis.parent or ''}}</em>
+          <span>{{ analysis.description or '' }}</span>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if facility.can_edit %}
+    <h3>Managers</h3>
+    {% for manager in facility.managers %}
+      <p>{{ manager.name }}{% if facility.via(manager) %} (via {{ facility.via(manager) }}){% endif %}</p>
+    {% endfor %}
+  {% endif %}
+{% endblock %}
