@@ -19,8 +19,10 @@ def new():
         new_facility = Facility(name=form.name.data, notes=form.notes.data,
                                 org_id=form.org.data)
         db.session.add(new_facility)
-        for analysis in form.analysis.data:
-            new_facility._analyses.append(Analysis.query.get(analysis))
+        analyses = []
+        for analysis in form.analyses.data:
+            analyses.append(Analysis.query.get(analysis))
+        new_facility._analyses = analyses
         db.session.commit()
         for i in range(form.access_slots.data):
             db.session.add(Slot(is_open=True, facility_id=new_facility.id))
@@ -52,7 +54,7 @@ def edit(facility_id):
         facility.notes = form.notes.data
         facility.org_id = form.org.data
         analyses = []
-        for analysis in form.analysis.data:
+        for analysis in form.analyses.data:
             analyses.append(Analysis.query.get(analysis))
         facility._analyses = analyses
         if form.access_slots.data < len(facility.slots):
@@ -60,7 +62,7 @@ def edit(facility_id):
                 form.access_slots.errors.append(
                     f'{len(facility.closed_slots)} are currently active and cannot be removed.')
                 return render_template('facilities/edit.html', form=form, facility_id=facility_id,
-                                       min_slots=max(len(facility.closed_slots), 1), default_slots=len(facility.slots))
+                                       min_slots=max(len(facility.closed_slots), 1))
             for i, slot in zip(range(form.access_slots.data), facility.open_slots):
                 db.session.delete(slot)
         elif form.access_slots.data > len(facility.slots):
@@ -69,4 +71,4 @@ def edit(facility_id):
         db.session.commit()
         return redirect(url_for('facs.view', facility_id=facility_id))
     return render_template('facilities/edit.html', form=form, facility_id=facility_id,
-                                       min_slots=max(len(facility.closed_slots), 1), default_slots=len(facility.slots))
+                                       min_slots=max(len(facility.closed_slots), 1))

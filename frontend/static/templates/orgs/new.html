@@ -1,36 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'bases/form.html' %}
 
-{% set local_sheets=['form.css'] %}
+{% set submit_text = 'Create' %}
 
-{% block content %}
-  <form method="post" action="{{ url_for('orgs.new') }}" class="form mx-auto">
-    {{ form.csrf_token }}
-    {% if errors %}
-      <div class="form-errors">
-        {% for error in errors %}
-          <span class="font-bold text-red-700">{{ error }}</span>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    <div class="form-row">
+{% block fields %}
+  {{ form_row('name') }}
+  {{ form_row('country') }}
+  <div class="form-row">
       <span><a href="https://ror.org">ROR</a> ID</span>
       {{ form.ror_id(class_='form-input form-single-line') }}
     </div>
-
-    <div class="form-row">
-      {{ form.name.label }}
-      {{ form.name(class_='form-input form-single-line') }}
-    </div>
-
-    <div class="form-row">
-      {{ form.country.label }}
-      {{ form.country(class_='form-input form-single-line') }}
-    </div>
-
-    <div class="form-footer">
-      <input type="submit" value="Create" class="p-2">
-    </div>
-
-  </form>
 {% endblock %}

@@ -22,14 +22,32 @@
       <span>{{ org.country|country_name }}</span>
     </div>
   </div>
-  <h3>Facilities</h3>
-  {% for fac in org.facilities %}
-    <p>{{ fac.name }}</p>
-  {% endfor %}
+  <section>
+    <h3>Facilities</h3>
+    <div class="flex my-4 flex-wrap">
+      {% for fac in org.facilities %}
+        <div class="border-primary-light border-2 rounded-md p-4 mr-4 max-w-md">
+          <p><a class="text-xl" href="{{ url_for('facs.view', facility_id=fac.id) }}">{{ fac.name }}</a></p>
+          <p>{{ fac.notes }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    {% if org.can_edit %}
+      <div class="my-4">
+        <a href="{{ url_for('facs.new', org_id=org.id) }}">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add facility</span>
+        </a>
+      </div>
+    {% endif %}
+  </section>
+  <section>
   {% if org.can_edit %}
-  <h3>Managers</h3>
-  {% for manager in org.managers %}
-    <p>{{ manager.name }}</p>
-  {% endfor %}
+    <h3>Managers</h3>
+    {% for manager in org.managers %}
+      <p>{{ manager.name }}</p>
+    {% endfor %}
   {% endif %}
 {% endblock %}
+</section>
+

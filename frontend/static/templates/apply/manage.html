@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% set local_sheets=['table.css'] %}
+
+{% block content %}
+  <h2>My applications</h2>
+
+  <div class="grid grid-cols-2">
+    {% for application in current_user.applications %}
+      <div class="org-card m-4 p-4 border-secondary-darkest border-2">
+        <div class="flex items-center">
+          <h3 class="text-primary-dark flex-grow">
+            <a href="{{ url_for('apps.view', app_id=application.id) }}" class="text-primary-dark">
+              {% if application.is_submitted %}
+                Application {{ application.date_submitted }}
+              {% else %}
+                Draft application
+              {% endif %}
+            </a>
+          </h3>
+          <a href="{{ url_for('apps.edit', app_id=application.id) }}">
+            <i class="fa-solid fa-pencil mr-2"></i>
+            <span>Edit</span>
+          </a>
+        </div>
+        <div class="detail-container mb-8">
+          <div class="detail-row">
+            <span class="detail-row-header">Desired location</span>
+            <span>{{ application.current_location|country_name }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-row-header">Dates</span>
+            <span>{{ application.date_from }} to {{ application.date_to }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-row-header">Requested analyses</span>
+            <div class="grid">
+              {% for analysis in application.analyses %}
+                <span>{{ analysis }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+
+
+{% endblock %}

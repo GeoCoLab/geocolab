@@ -17,9 +17,12 @@
   grid-column: inputs;
 }
 .form .form-row .form-input {
-  border-radius: 5px;
-  border: 1px solid var(--c1-dark);
+  border-radius: 0.375rem;
+  border: 2px solid var(--c1-dark);
   padding: 5px;
+}
+.form .form-row .form-input[type=checkbox] {
+  justify-self: start;
 }
 .form .form-row .form-single-line {
   height: 2em;
@@ -32,7 +35,7 @@
 }
 .form .form-footer input[type=submit] {
   padding: 0.5em 1em;
-  border-radius: 5px;
+  border-radius: 0.375rem;
   background-color: var(--c1-dark);
   color: var(--c1-lightest);
   justify-self: end;
@@ -41,4 +44,8 @@
 .form .form-errors {
   grid-column: inputs;
   margin-bottom: -10px;
+}
+.form select option[selected] {
+  font-weight: bold;
+  background-color: var(--c1-light);
 }

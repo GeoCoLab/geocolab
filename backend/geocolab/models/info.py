@@ -1,4 +1,5 @@
 from ..extensions import db
+from ..utils import countries
 
 
 class Analysis(db.Model):
@@ -15,5 +16,9 @@ class Analysis(db.Model):
                 return items
             else:
                 return get_hierarchy([items[0].parent] + items)
+
         parents = [p.name for p in get_hierarchy([self])]
         return ' > '.join(parents)
+
+
+countries_enum = db.Enum(*[c[0] for c in countries], name='countries')

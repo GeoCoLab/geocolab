@@ -1,5 +1,6 @@
 from flask_login import current_user
 from wtforms import SelectField, SelectMultipleField
+from flask_wtf import FlaskForm
 
 from ..models import Analysis
 from ..utils import countries
@@ -16,6 +17,9 @@ class AnalysisField(SelectMultipleField):
         kwargs['coerce'] = int
         kwargs['choices'] = [(a.id, str(a)) for a in Analysis.query.all() if len(a.children) == 0]
         super(AnalysisField, self).__init__(*args, **kwargs)
+
+    def process_data(self, value):
+        super(AnalysisField, self).process_data([v.id for v in value] if value else value)
 
 
 class OrgField(SelectField):

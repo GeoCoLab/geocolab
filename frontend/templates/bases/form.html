@@ -32,6 +32,8 @@
     {% endblock %}
 
     <div class="form-footer">
+      {% block addtl_footer %}
+      {% endblock %}
       <input type="submit" value="{{ submit_text or 'Submit' }}" class="p-2">
     </div>
 

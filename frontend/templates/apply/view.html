@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% set local_sheets=['table.css'] %}
+
+{% block content %}
+  <div class="flex items-center">
+    <h2 class="text-primary-dark flex-grow">
+      {% if application.is_submitted %}
+      Application {{ application.date_submitted }}
+      {% else %}
+      Draft application
+      {% endif %}
+    </h2>
+    <a href="{{ url_for('apps.edit', app_id=application.id) }}">
+      <i class="fa-solid fa-pencil mr-2"></i>
+      <span>Edit</span>
+    </a>
+  </div>
+  <div class="detail-container mb-8">
+    <div class="detail-row">
+      <span class="detail-row-header">Desired location</span>
+      <span>{{ application.current_location|country_name }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-row-header">Dates</span>
+      <span>{{ application.date_from }} to {{ application.date_to }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-row-header">About your request</span>
+      <span>{{ application.reason_for_request }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-row-header">Restrictions</span>
+      <span>{{ application.restrictions }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-row-header">Additional requirements</span>
+      <span>{{ application.additional_requirements }}</span>
+    </div>
+  </div>
+
+  <h3>Requested analyses</h3>
+  <div class="detail-container mb-8">
+    {% for analysis in application.analyses %}
+      <div class="detail-row">
+        <span class="detail-row-header">{{ analysis.name }}</span>
+        <div class="grid">
+          <em>{{ analysis.parent or '' }}</em>
+          <span>{{ analysis.description or '' }}</span>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

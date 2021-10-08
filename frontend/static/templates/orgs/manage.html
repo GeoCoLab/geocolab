@@ -9,7 +9,9 @@
     {% for org in current_user.managed_orgs %}
       <div class="org-card m-4 p-4 border-secondary-darkest border-2">
         <div class="flex items-center">
-          <h3 class="text-primary-dark flex-grow">{{ org.name }}</h3>
+          <h3 class="flex-grow">
+            <a href="{{ url_for('orgs.view', org_id=org.id) }}" class="text-primary-dark">{{ org.name }}</a>
+          </h3>
           <a href="{{ url_for('orgs.edit', org_id=org.id) }}">
             <i class="fa-solid fa-pencil mr-2"></i>
             <span>Edit</span>

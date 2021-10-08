@@ -1,13 +1,14 @@
-from ..extensions import db
 from flask_login import current_user
-from ..utils import countries
+
+from .info import countries_enum
+from ..extensions import db
 
 
 class Org(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), index=True)
-    country = db.Column(db.Enum(*[c[0] for c in countries], name='countries'))
-    ror_id = db.Column(db.String(9), index=True, unique=True)
+    country = db.Column(countries_enum)
+    ror_id = db.Column(db.String(9), index=True)
 
     facilities = db.relationship('Facility', backref='org')
 
