@@ -3,5 +3,11 @@
 {% set local_sheets=['home.css'] %}
 
 {% block content %}
-  <p>This is an absolutely fascinating homepage.</p>
+  <h2 class="my-10 text-center">
+    <a href="{{ url_for('apps.new') }}">Apply for access to analytical facilities</a>
+  </h2>
+  <h2 class="my-10 text-center">
+    <a href="{{ url_for('orgs.new') }}">Register your organisation as a provider</a>
+  </h2>
+
 {% endblock %}
