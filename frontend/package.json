@@ -12,6 +12,8 @@
     "build": "snowpack build"
   },
   "dependencies": {
+    "axios": "^0.22.0",
+    "jquery": "^3.6.0",
     "tailwindcss": "^2.2.16"
   },
   "devDependencies": {

@@ -2,7 +2,7 @@
 
 {% set local_sheets=['form.css'] %}
 
-{% macro form_row(item, class_='form-input form-single-line') -%}
+{% macro form_row(item, class_='form-input form-single-line', help=None) -%}
   <div class="form-row">
     {% if form[item].errors %}
       <div class="form-errors">
@@ -13,11 +13,19 @@
     {% endif %}
     {{ form[item].label }}
     {{ form[item](class_=class_, **kwargs) }}
-
+    {% if help %}
+      <div class="help">
+        <i class="fa-solid fa-info-circle"></i>
+        <span class="help-text ml-2">
+          {{ help }}
+        </span>
+      </div>
+    {% endif %}
   </div>
 {% endmacro -%}
 
 {% block content %}
+  <h2 class="text-center mb-8">{{ title }}</h2>
   <form method="post" action="{{ form_action or url_for(request.endpoint) }}" class="form mx-auto">
     {{ form.csrf_token }}
     {% if errors %}

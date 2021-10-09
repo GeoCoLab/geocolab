@@ -9,6 +9,7 @@ class Org(db.Model):
     name = db.Column(db.String(200), index=True)
     country = db.Column(countries_enum)
     ror_id = db.Column(db.String(9), index=True)
+    will_fund_travel = db.Column(db.Boolean, default=True)
 
     facilities = db.relationship('Facility', backref='org')
 

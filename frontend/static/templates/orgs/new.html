@@ -1,12 +1,14 @@
 {% extends 'bases/form.html' %}
 
+{% set title='New organisation' %}
 {% set submit_text = 'Create' %}
 
 {% block fields %}
   {{ form_row('name') }}
   {{ form_row('country') }}
   <div class="form-row">
-      <span><a href="https://ror.org">ROR</a> ID</span>
-      {{ form.ror_id(class_='form-input form-single-line') }}
-    </div>
+    <label for="ror_id"><a href="https://ror.org">ROR</a> ID</label>
+    {{ form.ror_id(class_='form-input form-single-line') }}
+  </div>
+  {{ form_row('will_fund_travel', help='are you able to provide funding for travel costs if necessary?') }}
 {% endblock %}

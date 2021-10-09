@@ -1,4 +1,5 @@
 from ..extensions import db
+from datetimerange import DateTimeRange
 
 org_manager = db.Table('org_manager',
                        db.Column('org_id', db.Integer, db.ForeignKey('org.id'), primary_key=True),
@@ -30,4 +31,20 @@ class Offer(db.Model):
     date_to = db.Column(db.Date)
 
     slot = db.relationship('Slot', backref='offers')
-    application = db.relationship('Application', backref='offer', uselist=False)
+    application = db.relationship('Application', backref=db.backref('offer', uselist=False))
+
+    @property
+    def range(self):
+        return DateTimeRange(self.date_from, self.date_to)
+
+    def precedes(self, other):
+        return (other - self.date_to).days == 1
+
+    def follows(self, other):
+        return (self.date_from - other).days == 1
+
+    def adjacent(self, other):
+        return self.precedes(other) or self.follows(other)
+
+    def contains(self, date):
+        return date in self.range

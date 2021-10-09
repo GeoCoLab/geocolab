@@ -11,6 +11,7 @@ AUTHOR = 'GeoCoLab'
 VERSION = '1.0.0'
 REQUIRED = ['gunicorn',
             'celery[redis]',
+            'datetimerange',
             'flask-wtf',
             'flask-login',
             'flask-mail',

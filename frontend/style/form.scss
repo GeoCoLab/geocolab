@@ -4,7 +4,7 @@
   display: grid;
   max-width: $break-sm;
   grid-gap: 1em;
-  grid-template-columns: [labels] auto [inputs] 1fr;
+  grid-template-columns: [labels] auto [inputs] 1fr [help] 1em;
   align-items: center;
 
   & .form-row {
@@ -30,7 +30,12 @@
     }
 
     & .form-single-line {
-      height: 2em;
+      height: 2.5em;
+    }
+
+    & .help-text {
+      position: absolute;
+      max-width: 25em;
     }
   }
 
@@ -39,15 +44,6 @@
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: center;
-
-    & input[type='submit'] {
-      padding: 0.5em 1em;
-      border-radius: 0.375rem;
-      background-color: $primary-dark;
-      color: $primary-lightest;
-      justify-self: end;
-      grid-column: 2;
-    }
   }
 
   & .form-errors {
@@ -59,4 +55,13 @@
     font-weight: bold;
     background-color: $primary-light;
   }
+}
+
+input[type='submit'] {
+  padding: 0.5em 1em;
+  border-radius: 0.375rem;
+  background-color: $primary-dark;
+  color: $primary-lightest;
+  justify-self: end;
+  grid-column: 2;
 }

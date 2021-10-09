@@ -1,14 +1,16 @@
 {% extends 'bases/form.html' %}
 
+{% set title='Edit organisation' %}
 {% set form_action = url_for('orgs.edit', org_id=org_id) %}
 
 {% block fields %}
   {{ form_row('name') }}
   {{ form_row('country') }}
   <div class="form-row">
-    <span><a href="https://ror.org">ROR</a> ID</span>
+    <label for="ror_id"><a href="https://ror.org">ROR</a> ID</label>
     {{ form.ror_id(class_='form-input form-single-line') }}
   </div>
+  {{ form_row('will_fund_travel', help='are you able to provide funding for travel costs if necessary?') }}
 {% endblock %}
 
 {% block addtl_footer %}

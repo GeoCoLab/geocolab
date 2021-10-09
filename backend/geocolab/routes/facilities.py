@@ -27,7 +27,7 @@ def new():
         for i in range(form.access_slots.data):
             db.session.add(Slot(is_open=True, facility_id=new_facility.id))
         db.session.commit()
-        return redirect(url_for('facs.view', facility_id=new_facility.id))
+        return redirect(url_for('orgs.view', org_id=new_facility.org_id))
     return render_template('facilities/new.html', form=form)
 
 

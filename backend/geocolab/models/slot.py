@@ -1,5 +1,6 @@
 from ..extensions import db
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta
+from datetimerange import DateTimeRange
 
 
 class Slot(db.Model):
@@ -15,4 +16,29 @@ class Slot(db.Model):
             return next(m for m in self.offers if m.date_from <= today <= m.date_to)
         except StopIteration:
             return None
+
+    def offers_in_range(self, date_from, date_to):
+        date_range = DateTimeRange(date_from, date_to)
+        offers = [o for o in self.offers if DateTimeRange(o.date_from, o.date_to).is_intersection(date_range)]
+        return sorted(offers, key=lambda x: x.date_from)
+
+    def gaps_in_range(self, date_from, date_to):
+        offers = self.offers_in_range(date_from, date_to)
+        oneday = timedelta(days=1)
+        if len(offers) == 0:
+            return [(date_from, date_to)]
+        else:
+            gaps = []
+            for i in range(len(offers)):
+                o = offers[i]
+                prev_o = gaps[-1][1] if gaps else (date_from - oneday)
+                next_o = offers[i + 1].date_to if i == len(offers) - 1 else (date_to + oneday)
+                if o.contains(prev_o) or o.follows(prev_o):
+                    continue
+                if o.contains(next_o) or o.precedes(next_o):
+                    continue
+                gaps.append((prev_o + oneday, next_o - oneday))
+            return gaps
+
+
 

@@ -1,14 +1,15 @@
 {% extends 'bases/form.html' %}
 
+{% set title='Edit application' %}
 {% set form_action = url_for('apps.edit', app_id=application_id) %}
 
 {% block fields %}
   {{ form_row('analyses', class_='form-input', size=5) }}
-  {{ form_row('current_location') }}
+  {{ form_row('desired_location') }}
   {{ form_row('current_org') }}
   {{ form_row('date_from') }}
   {{ form_row('date_to') }}
-  {{ form_row('reason_for_request', class_='form-input') }}
+  {{ form_row('about_request', class_='form-input') }}
   {{ form_row('restrictions', class_='form-input') }}
   {{ form_row('additional_requirements', class_='form-input') }}
   {{ form_row('is_submitted', class_='form-input') }}

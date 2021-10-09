@@ -1,15 +1,18 @@
 {% extends 'bases/form.html' %}
 
+{% set title='New application' %}
 {% set submit_text = 'Save/Submit' %}
 
 {% block fields %}
   {{ form_row('analyses', class_='form-input', size=5) }}
-  {{ form_row('current_location') }}
+  {{ form_row('desired_location', help='funding will not include travel to this location.') }}
   {{ form_row('current_org') }}
   {{ form_row('date_from') }}
   {{ form_row('date_to') }}
-  {{ form_row('reason_for_request', class_='form-input') }}
-  {{ form_row('restrictions', class_='form-input') }}
-  {{ form_row('additional_requirements', class_='form-input') }}
-  {{ form_row('is_submitted', class_='form-input') }}
+  {{ form_row('able_to_travel', class_='form-input', help='are you physically able to travel to access facilities?') }}
+  {{ form_row('fund_own_travel', class_='form-input', help='can you fund that travel yourself?') }}
+  {{ form_row('about_request', class_='form-input', help='why you need access to these facilities.') }}
+  {{ form_row('restrictions', class_='form-input', help='e.g. areas you are not able to visit, etc.') }}
+  {{ form_row('additional_requirements', class_='form-input', help='e.g. disability accomodations.') }}
+  {{ form_row('is_submitted', class_='form-input', help='untick to save as a draft.') }}
 {% endblock %}

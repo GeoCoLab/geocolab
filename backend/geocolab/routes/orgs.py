@@ -19,7 +19,7 @@ def new():
         new_org.managers.append(current_user)
         db.session.add(new_org)
         db.session.commit()
-        return redirect(url_for('orgs.view', org_id=new_org.id))
+        return redirect(url_for('facs.new', org=new_org.id))
     return render_template('orgs/new.html', form=form)
 
 

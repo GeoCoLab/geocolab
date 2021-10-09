@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
-{% set local_sheets=['table.css'] %}
+{% set local_sheets=['table.css', 'form.css'] %}
 
 {% block content %}
   <div class="flex items-center">
     <h2 class="text-primary-dark flex-grow">
       {% if application.is_submitted %}
-      Application {{ application.date_submitted }}
+        Application {{ application.date_submitted }}
       {% else %}
-      Draft application
+        Draft application
       {% endif %}
     </h2>
     <a href="{{ url_for('apps.edit', app_id=application.id) }}">
@@ -19,7 +19,7 @@
   <div class="detail-container mb-8">
     <div class="detail-row">
       <span class="detail-row-header">Desired location</span>
-      <span>{{ application.current_location|country_name }}</span>
+      <span>{{ application.desired_location|country_name }}</span>
     </div>
     <div class="detail-row">
       <span class="detail-row-header">Dates</span>
@@ -27,7 +27,7 @@
     </div>
     <div class="detail-row">
       <span class="detail-row-header">About your request</span>
-      <span>{{ application.reason_for_request }}</span>
+      <span>{{ application.about_request }}</span>
     </div>
     <div class="detail-row">
       <span class="detail-row-header">Restrictions</span>
@@ -51,4 +51,37 @@
       </div>
     {% endfor %}
   </div>
+
+  <input type="hidden" id="application_id" value="{{ application.id }}">
+  <input type="hidden" id="csrf_token" value="{{ csrf_token() }}"/>
+
+  <h3>Matches</h3>
+  <div id="matches" class="grid grid-flow-col">
+    {% if application.offer %}
+      <div class="match-box max-w-md">
+        <p class="text-xl">
+          <a href="{{ url_for('facs.view', facility_id=application.offer.slot.facility.id) }}">{{ application.offer.slot.facility.name }}</a>
+          <span> at </span>
+          <a href="{{ url_for('orgs.view', org_id=application.offer.slot.facility.org.id) }}">{{ application.offer.slot.facility.org.name }}</a>
+        </p>
+        <div class="detail-container mb-8">
+          <div class="detail-row">
+            <span class="detail-row-header">Dates</span>
+            <span>{{ application.offer.date_from }} to {{ application.offer.date_to }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-row-header">Travel funded</span>
+            <span>{{ 'Yes' if application.offer.slot.facility.org.will_fund_travel else 'No' }}</span>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
+
+
+{% block scripts %}
+  {% if not application.offer %}
+    <script type="module" src="{{ url_for('static', filename='src/index.js') }}"></script>
+  {% endif %}
 {% endblock %}
