@@ -10,7 +10,7 @@
     <label for="ror_id"><a href="https://ror.org">ROR</a> ID</label>
     {{ form.ror_id(class_='form-input form-single-line') }}
   </div>
-  {{ form_row('accepts_samples') }}
-  {{ form_row('accepts_visits') }}
-  {{ form_row('funding_limit', help='potential extra funding for applicants in need, e.g. travel and/or sample transport costs') }}
+ {{ form_row('accepted_access_types') }}
+  {{ form_row('funding_level') }}
+  {{ form_row('funding_limit', default=0, help='potential extra funding for applicants in need, e.g. travel and/or sample transport costs') }}
 {% endblock %}
