@@ -12,12 +12,12 @@ bp = Blueprint('facs', __name__, url_prefix='/facilities')
 @login_required
 def new():
     form_defaults = {}
-    if 'org' in request.args:
-        form_defaults['org'] = request.args['org']
+    if 'org_id' in request.args:
+        form_defaults['org_id'] = request.args['org_id']
     form = FacilityForm(**form_defaults)
     if form.validate_on_submit():
         new_facility = Facility(name=form.name.data, notes=form.notes.data,
-                                org_id=form.org.data)
+                                org_id=form.org_id.data)
         db.session.add(new_facility)
         analyses = []
         for analysis in form.analyses.data:
@@ -52,7 +52,7 @@ def edit(facility_id):
     if form.validate_on_submit():
         facility.name = form.name.data
         facility.notes = form.notes.data
-        facility.org_id = form.org.data
+        facility.org_id = form.org_id.data
         analyses = []
         for analysis in form.analyses.data:
             analyses.append(Analysis.query.get(analysis))

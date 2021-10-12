@@ -6,16 +6,17 @@
 {% block fields %}
   {{ form_row('name') }}
   {{ form_row('analyses', class_='form-input', size=5) }}
+  {{ form_row('other_analyses', class_='form-input', help='other analyses available that are not currently listed above.') }}
   {{ form_row('access_slots', min=1) }}
   {{ form_row('notes', class_='form-input') }}
 
   <div class="form-row">
-    {{ form.org.label }}
-    {% if form.org.predefined %}
-      <input type="hidden" name="{{ form.org.name }}" id="{{ form.org.id }}" value="{{ form.org.object_data }}">
-      <b>{{ form.org.text }}</b>
+    {{ form.org_id.label }}
+    {% if form.org_id.predefined %}
+      <input type="hidden" name="{{ form.org_id.name }}" id="{{ form.org_id.id }}" value="{{ form.org_id.object_data }}">
+      <b>{{ form.org_id.text }}</b>
     {% else %}
-      {{ form.org(class_='form-input form-single-line') }}
+      {{ form.org_id(class_='form-input form-single-line') }}
     {% endif %}
   </div>
 {% endblock %}

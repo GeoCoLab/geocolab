@@ -4,7 +4,7 @@ import $ from 'jquery';
 
 $(document).ready(() => {
     let csrf = $('#csrf_token').val();
-    axios.defaults.headers.common["X-CSRFToken"] = csrf;
+    axios.defaults.headers.common['X-CSRFToken'] = csrf;
 
     let appId = $('#application_id').val();
 
@@ -13,32 +13,41 @@ $(document).ready(() => {
         url: `/apply/${ appId }/find_matches`
     }).then(r => {
         let matchesSection = $('#matches');
-        r.data.map(m => {
-            matchesSection.append(
-                `
-                <div class="match-box max-w-md">
+        if (r.data.success) {
+            r.data.matches.map(m => {
+                matchesSection.append(
+                    `
+                <div class="match-box max-w-md mb-8">
                   <p class="text-xl">
-                    <a href="${ m.url }">${ m.name }</a> at <a href="${ m.org_url }">${ m.org_name }</a> (${ m.location })
+                    Facility in ${ m.location }
                   </p>
                   <div class="detail-container mb-8">
                     <div class="detail-row">
                       <span class="detail-row-header">Provides</span>
-                      <span>${ m.matching_analyses.join('<br>') }</span>
+                      <span>${ [...m.matching_analyses, m.other_analyses].join('<br>') }</span>
                     </div>
                     <div class="detail-row">
                       <span class="detail-row-header">Next available</span>
                       <span>${ m.available } to ${ m.until }</span>
                     </div>
                     <div class="detail-row">
-                      <span class="detail-row-header">Will fund travel</span>
-                      <span>${ m.travel_fund ? 'Yes' : 'No' }</span>
+                      <span class="detail-row-header">Funding available</span>
+                      <span>${ m.funding_level }</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-row-header">Visit/send samples</span>
+                      <span>${ m.access_types }</span>
                     </div>
                   </div>
                   <input type="submit" data-slot-id="${ m.slot_id }" data-date-from="${ m.available }" data-date-to="${ m.until }" class="match-button p-2" value="Accept">
                 </div>
                 `
-            );
-        });
+                );
+            });
+        }
+        else {
+            matchesSection.append('No matches:<br>' + r.data.errors.join('<br>'))
+        }
     }).then(() => {
         $('.match-button').click(e => {
             axios.post('/apply/make_match', {

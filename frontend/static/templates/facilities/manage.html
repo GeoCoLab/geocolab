@@ -5,7 +5,7 @@
 {% block content %}
   <h2>Managed facilities</h2>
 
-  <div class="grid grid-cols-2">
+  <div class="grid sm:grid-cols-2">
     {% for facility in current_user.managed_facilities %}
       <div class="org-card m-4 p-4 border-secondary-darkest border-2">
         <div class="flex items-center">
@@ -31,6 +31,9 @@
               {% for analysis in facility.analyses %}
                 <span>{{ analysis }}</span>
               {% endfor %}
+              {% if facility.other_analyses %}
+                <span>{{ facility.other_analyses }}</span>
+              {% endif %}
             </div>
           </div>
         </div>

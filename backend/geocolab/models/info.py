@@ -22,3 +22,19 @@ class Analysis(db.Model):
 
 
 countries_enum = db.Enum(*[c[0] for c in countries], name='countries')
+
+access_type = {
+    'visit': 'Visit',
+    'samples': 'Send samples',
+    'any': 'Any'
+}
+
+access_type_enum = db.Enum(*access_type.keys(), name='access_type')
+
+funding_level = {
+    'none': 'None',
+    'domestic': 'Domestic',
+    'international': 'International'
+}
+
+funding_level_enum = db.Enum(*funding_level.keys(), name='funding_level')

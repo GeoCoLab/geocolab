@@ -6,6 +6,7 @@ class Facility(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200))
     notes = db.Column(db.String)
+    other_analyses = db.Column(db.String)
     org_id = db.Column(db.Integer, db.ForeignKey('org.id'), nullable=False)
 
     _analyses = db.relationship('Analysis', secondary='facility_analyses', backref=db.backref('facilities', lazy=True),

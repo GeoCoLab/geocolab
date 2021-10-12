@@ -48,3 +48,10 @@ class Offer(db.Model):
 
     def contains(self, date):
         return date in self.range
+
+    @property
+    def funded(self):
+        self_full_funded = self.application.funding_level == 'international'
+        self_match_funded = self.application.funding_level == self.slot.facility.org.funding_level
+        no_org_fund = self.slot.facility.org.funding_level == 'none'
+        return not (self_full_funded or self_match_funded or no_org_fund)

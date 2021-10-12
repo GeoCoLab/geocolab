@@ -1,6 +1,9 @@
 from ..extensions import db
 from datetime import datetime as dt, timedelta
 from datetimerange import DateTimeRange
+from collections import namedtuple
+
+Gap = namedtuple('Gap', ['start', 'end', 'days'])
 
 
 class Slot(db.Model):
@@ -22,11 +25,11 @@ class Slot(db.Model):
         offers = [o for o in self.offers if DateTimeRange(o.date_from, o.date_to).is_intersection(date_range)]
         return sorted(offers, key=lambda x: x.date_from)
 
-    def gaps_in_range(self, date_from, date_to):
+    def gaps_in_range(self, date_from, date_to, min_length=None):
         offers = self.offers_in_range(date_from, date_to)
         oneday = timedelta(days=1)
         if len(offers) == 0:
-            return [(date_from, date_to)]
+            return [Gap(date_from, date_to, date_to - date_to)]
         else:
             gaps = []
             for i in range(len(offers)):
@@ -37,7 +40,9 @@ class Slot(db.Model):
                     continue
                 if o.contains(next_o) or o.precedes(next_o):
                     continue
-                gaps.append((prev_o + oneday, next_o - oneday))
+                gaps.append(Gap(prev_o + oneday, next_o - oneday, (next_o - prev_o).days - 2))
+            if min_length:
+                gaps = [g for g in gaps if g.days >= min_length]
             return gaps
 
 

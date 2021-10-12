@@ -1,22 +1,18 @@
 {% macro nav_item(endpoint, page_title, use_blueprint=False) -%}
   {% set matches = (request.blueprint == endpoint.split('.')[0]) if use_blueprint
       else (request.endpoint == endpoint) %}
-  <li><a class="px-2 py-1 mx-1 nav-item{{ ' nav-item--active' if matches else '' }}"
+  <li class="mb-4 sm:mb-1"><a class="px-2 py-1 mx-1 nav-item{{ ' nav-item--active' if matches else '' }}"
          href="{{ url_for(endpoint) if endpoint else '#' }}">{{ page_title }}</a></li>
 {% endmacro -%}
 
 <nav class="p-4 w-full grid items-center" id="page-nav">
   <img src="{{ url_for('static', filename='media/logo.png') }}" alt="The GeoCoLab logo" class="h-6" id="nav-icon">
-  <ul class="flex" id="nav-links">
+  <ul class="flex flex-wrap md:flex-nowrap" id="nav-links">
     {{ nav_item('home.index', 'Home') }}
     {{ nav_item('home.about', 'About') }}
     {% if current_user.is_authenticated %}
       {{ nav_item('apps.new', 'Apply for access') }}
       {{ nav_item('orgs.new', 'Offer services') }}
-    {% endif %}
-  </ul>
-  <ul class="flex" id="nav-auth">
-    {% if current_user.is_authenticated %}
       {% if current_user.has_pending_applications or current_user.is_admin %}
         {{ nav_item('apps.manage', 'Applications') }}
       {% endif %}
@@ -26,9 +22,11 @@
       {% if current_user.is_facility_manager or current_user.is_admin %}
         {{ nav_item('facs.manage', 'Facilities') }}
       {% endif %}
-      {% if current_user.is_admin %}
-        {{ nav_item(None, 'Admin') }}
-      {% endif %}
+    {% endif %}
+  </ul>
+  <ul class="flex justify-end" id="nav-auth">
+    {% if current_user.is_authenticated %}
+      <li class="mb-4 sm:mb-1"><span class="px-2 py-1 mx-1">Hi, {{ current_user.name }}</span></li>
       {{ nav_item('auth.logout', 'Logout') }}
     {% else %}
       {{ nav_item('auth.login', 'Login') }}

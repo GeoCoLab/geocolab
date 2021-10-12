@@ -1,14 +1,14 @@
 import itertools
 from datetime import datetime as dt, timedelta
-from datetimerange import DateTimeRange
 
+from datetimerange import DateTimeRange
 from flask import Blueprint, render_template, redirect, url_for, jsonify, request
 from flask_login import login_required, current_user
 
 from ..extensions import db, login_manager
-from ..utils import countries_cache
 from ..forms import ApplicationForm
-from ..models import Application, Analysis, Org, Facility, Slot, Offer, application_analyses, facility_analyses
+from ..models import Application, Analysis, Org, Facility, Slot, Offer, application_analyses, facility_analyses, info
+from ..utils import countries_cache
 
 bp = Blueprint('apps', __name__, url_prefix='/apply')
 
@@ -22,6 +22,7 @@ def check_access(application, org=None, facility=None):
     if any(can_access):
         return True
 
+
 @bp.route('/', methods=['GET', 'POST'])
 @login_required
 def new():
@@ -31,12 +32,16 @@ def new():
                               desired_location=form.desired_location.data,
                               date_from=form.date_from.data,
                               date_to=form.date_to.data,
-                              able_to_travel=form.able_to_travel.data,
-                              fund_own_travel=form.fund_own_travel.data,
                               about_request=form.about_request.data,
                               restrictions=form.restrictions.data,
                               current_org=form.current_org.data,
-                              additional_requirements=form.additional_requirements.data)
+                              additional_requirements=form.additional_requirements.data,
+                              days_estimate=form.days_estimate.data,
+                              samples_estimate=form.samples_estimate.data,
+                              about_you=form.about_you.data,
+                              other_analyses=form.other_analyses.data,
+                              access_type=form.access_type.data,
+                              funding_level=form.funding_level.data)
         if form.is_submitted.data:
             new_app.is_submitted = True
             new_app.date_submitted = dt.now().date()
@@ -77,12 +82,16 @@ def edit(app_id):
                            desired_location=form.desired_location.data,
                            date_from=form.date_from.data,
                            date_to=form.date_to.data,
-                           able_to_travel=form.able_to_travel.data,
-                           fund_own_travel=form.fund_own_travel.data,
                            about_request=form.about_request.data,
                            restrictions=form.restrictions.data,
                            current_org=form.current_org.data,
-                           additional_requirements=form.additional_requirements.data)
+                           additional_requirements=form.additional_requirements.data,
+                           days_estimate=form.days_estimate.data,
+                           samples_estimate=form.samples_estimate.data,
+                           about_you=form.about_you.data,
+                           other_analyses=form.other_analyses.data,
+                           access_type=form.access_type.data,
+                           funding_level=form.funding_level.data)
         for k, v in update_info.items():
             setattr(application, k, v)
         if form.is_submitted.data and not application.is_submitted:
@@ -104,64 +113,95 @@ def find_matches(app_id):
     if not check_access(application):
         return login_manager.unauthorized()
     analysis_ids = [a.id for a in application.analyses]
+    failed = []
 
-    # narrow by location
-    if application.able_to_travel and not application.fund_own_travel:
-        org_query = Org.query.filter(Org.will_fund_travel).all()
-    elif not application.able_to_travel:
-        org_query = Org.query.filter(Org.country == application.desired_location).all()
+    # narrow by org
+    org_filters = []
+    if application.access_type != 'any':
+        org_filters.append(Org.accepted_access_types == application.access_type)
+    if application.funding_required:
+        domestic = Org.country == application.desired_location
+        international = Org.country != application.desired_location
+        if application.funding_level == 'none':
+            org_filters.append(
+                db.or_(db.and_(domestic, Org.funding_level != 'none'),
+                       db.and_(international, Org.funding_level == 'international')))
+        elif application.funding_level == 'domestic':
+            org_filters.append(
+                db.or_(domestic, db.and_(international, Org.funding_level == 'international'))
+            )
+
+    if org_filters:
+        org_query = Org.query.filter(*org_filters).all()
     else:
         org_query = []
     facs_loc = [fac.id for org in org_query for fac in org.facilities]
+    if not facs_loc:
+        failed.append('No organisations with appropriate funding found.')
 
     # narrow by analysis
     fac_query = db.session.query(application_analyses) \
         .filter_by(application_id=app_id) \
         .join(facility_analyses, application_analyses.c.analysis_id == facility_analyses.c.analysis_id)
-    if facs_loc:
+    if org_query:
         fac_query = fac_query.filter(facility_analyses.c.facility_id.in_(facs_loc))
     facs_analysis = fac_query.with_entities(facility_analyses.c.facility_id, facility_analyses.c.analysis_id).all()
+    if not facs_analysis:
+        failed.append('No facilities with required analyses found.')
 
     # narrow by slots - find anything that's occupied during the time range and ignore it
     slot_date_query = Slot.query.filter(Slot.facility_id.in_([f[0] for f in facs_analysis])).join(
         Offer)
     date_filters = []
     date_from = application.date_from or dt.now().date
-    date_to = application.date_to or date_from + timedelta(years=5)
+    date_to = application.date_to or date_from + timedelta(days=365)
     date_range = DateTimeRange(date_from, date_to)
     date_filters.append(Offer.date_to >= date_from)
     date_filters.append(Offer.date_from <= date_to)
     slot_date_query = slot_date_query.filter(*date_filters).with_entities(Slot.id, Offer.date_from, Offer.date_to)
-    slot_availability = {k: all([DateTimeRange(x[1], x[2]).is_intersection(date_range) for x in v]) for k, v in itertools.groupby(sorted(slot_date_query, key=lambda x: x[0]), key=lambda x: x[0])}
+    slot_availability = {k: all([DateTimeRange(x[1], x[2]).is_intersection(date_range) for x in v]) for k, v in
+                         itertools.groupby(sorted(slot_date_query, key=lambda x: x[0]), key=lambda x: x[0])}
     filled_slots = [k for k, v in slot_availability.items() if v]
-    fac_date_query = Facility.query.join(Slot).filter(Facility.id.in_([f[0] for f in facs_analysis]), Slot.id.not_in(filled_slots))
+    fac_date_query = Facility.query.join(Slot).filter(Facility.id.in_([f[0] for f in facs_analysis]))
+    if filled_slots:
+        fac_date_query = fac_date_query.filter(Slot.id.not_in(filled_slots))
     facs_date = fac_date_query.all()
+    if not facs_date:
+        failed.append('No open slots found.')
 
     matches = []
     for fac in facs_date:
         open_slots = Slot.query.filter(Slot.facility_id == fac.id, Slot.id.not_in(filled_slots)).all()
-        sorted_slots = sorted(open_slots, key=lambda x: -len(x.gaps_in_range(date_from, date_to)))
+        slot_gaps = [(s, s.gaps_in_range(date_from, date_to, min_length=application.days_estimate or 1)) for s in
+                     open_slots]
+        sorted_slots = sorted(slot_gaps, key=lambda x: -x[1][0].days)
         first_slot = sorted_slots[0]
-        first_gap = first_slot.gaps_in_range(date_from, date_to)[0]
+        first_gap = first_slot[1][0]
 
         match_dict = {
-            'id': fac.id,
-            'url': url_for('facs.view', facility_id=fac.id),
-            'name': fac.name,
             'matching_analyses': [str(a) for a in fac.analyses if a.id in analysis_ids],
+            'other_analyses': fac.other_analyses,
             'location': countries_cache[fac.org.country]['name'],
-            'org_id': fac.org.id,
-            'org_name': fac.org.name,
-            'org_url': url_for('orgs.view', org_id=fac.org.id),
-            'available': dt.strftime(first_gap[0], '%Y-%m-%d'),
-            'until': dt.strftime(first_gap[1], '%Y-%m-%d'),
-            'slot_id': first_slot.id,
-            'travel_fund': fac.org.will_fund_travel
+            'available': dt.strftime(first_gap.start, '%Y-%m-%d'),
+            'until': dt.strftime(first_gap.start + timedelta(days=application.days_estimate or 1), '%Y-%m-%d'),
+            'slot_id': first_slot[0].id,
+            'funding_level': info.funding_level[fac.org.funding_level],
+            'access_types': info.access_type[fac.org.accepted_access_types]
         }
 
         matches.append(match_dict)
 
-    return jsonify(matches)
+    if matches:
+        return jsonify({
+            'success': True,
+            'matches': matches,
+            'count': len(matches)
+        })
+    else:
+        return jsonify({
+            'success': False,
+            'errors': failed
+        })
 
 
 @bp.route('/make_match', methods=['POST'])
@@ -184,4 +224,3 @@ def make_match():
         return jsonify({'success': True})
     except Exception as e:
         return jsonify({'success': False, 'error': e})
-

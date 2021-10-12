@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
+
+from ..extensions import db
 from ..forms import OrgForm
 from ..models import Org
-from ..extensions import db
 
 bp = Blueprint('orgs', __name__, url_prefix='/orgs')
 
@@ -15,7 +16,9 @@ def new():
         ror_id = form.ror_id.data
         if ror_id:
             ror_id = ror_id[-9:]
-        new_org = Org(name=form.name.data, country=form.country.data, ror_id=ror_id)
+        new_org = Org(name=form.name.data, country=form.country.data, ror_id=ror_id,
+                      funding_level=form.funding_level.data, funding_limit=form.funding_limit.data,
+                      accepted_access_types=form.accepted_access_types.data)
         new_org.managers.append(current_user)
         db.session.add(new_org)
         db.session.commit()
@@ -48,6 +51,9 @@ def edit(org_id):
         org.name = form.name.data
         org.ror_id = ror_id
         org.country = form.country.data
+        org.funding_level = form.funding_level.data
+        org.funding_limit = form.funding_limit.data
+        org.accepted_access_types = form.accepted_access_types.data
         db.session.commit()
         return redirect(url_for('orgs.view', org_id=org_id))
     return render_template('orgs/edit.html', form=form, org_id=org_id)

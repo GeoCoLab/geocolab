@@ -1,6 +1,6 @@
 from flask_login import current_user
 
-from .info import countries_enum
+from .info import countries_enum, funding_level_enum, access_type_enum
 from ..extensions import db
 
 
@@ -9,7 +9,9 @@ class Org(db.Model):
     name = db.Column(db.String(200), index=True)
     country = db.Column(countries_enum)
     ror_id = db.Column(db.String(9), index=True)
-    will_fund_travel = db.Column(db.Boolean, default=True)
+    funding_limit = db.Column(db.Integer, default=0)
+    funding_level = db.Column(funding_level_enum, default='none', nullable=False)
+    accepted_access_types = db.Column(access_type_enum, default='any', nullable=False)
 
     facilities = db.relationship('Facility', backref='org')
 
@@ -21,3 +23,7 @@ class Org(db.Model):
             return True
         else:
             return current_user.id in [u.id for u in self.managers]
+
+    @property
+    def will_fund(self):
+        return self.funding_level != 'none'

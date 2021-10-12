@@ -6,9 +6,14 @@
 {% block fields %}
   {{ form_row('name') }}
   {{ form_row('analyses', class_='form-input', size=5) }}
+  {{ form_row('other_analyses', class_='form-input', help='other analyses available that are not currently listed above.') }}
   {{ form_row('access_slots', min=min_slots or 1) }}
   {{ form_row('notes', class_='form-input') }}
-  {{ form_row('org') }}
+  <div class="form-row">
+    {{ form.org_id.label }}
+    <input type="hidden" name="{{ form.org_id.name }}" id="{{ form.org_id.id }}" value="{{ form.org_id.object_data }}">
+    <b>{{ form.org_id.text }}</b>
+  </div>
 {% endblock %}
 
 {% block addtl_footer %}

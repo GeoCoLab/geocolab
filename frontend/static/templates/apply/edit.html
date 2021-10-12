@@ -4,15 +4,29 @@
 {% set form_action = url_for('apps.edit', app_id=application_id) %}
 
 {% block fields %}
+  <h3 class="text-center col-span-2">Request</h3>
   {{ form_row('analyses', class_='form-input', size=5) }}
-  {{ form_row('desired_location') }}
-  {{ form_row('current_org') }}
-  {{ form_row('date_from') }}
-  {{ form_row('date_to') }}
-  {{ form_row('about_request', class_='form-input') }}
-  {{ form_row('restrictions', class_='form-input') }}
-  {{ form_row('additional_requirements', class_='form-input') }}
-  {{ form_row('is_submitted', class_='form-input') }}
+  {{ form_row('other_analyses', class_='form-input', placeholder='analyses that are not included in the list above; used for improving GeoCoLab.') }}
+  {{ form_row('date_from', help='approx. start date for search, e.g.date when samples will be ready.') }}
+  {{ form_row('date_to', help='approx. end date for search, e.g. project deadline.') }}
+  {{ form_row('days_estimate', min=1, value=1) }}
+  {{ form_row('samples_estimate', min=1, value=1) }}
+  {{ form_row('access_type', class_='form-input', help='do you need to physically visit the facilities?') }}
+  {{ form_row('about_request', class_='form-input', placeholder='what these analyses will be used for.') }}
+
+  <hr class="my-10 col-span-2">
+
+  <h3 class="text-center col-span-2">You</h3>
+  {{ form_row('about_you', class_='form-input', placeholder='a brief description of your barrier(s) to accessing these facilities elsewhere.') }}
+  {{ form_row('desired_location', help='funding will not include travel to this location.') }}
+  {{ form_row('current_org', placeholder='leave blank if none.') }}
+  {{ form_row('funding_level', class_='form-input', help='any funding you currently have from other sources.') }}
+  {{ form_row('restrictions', class_='form-input', placeholder='anything that might prevent you from using a certain facility.') }}
+  {{ form_row('additional_requirements', class_='form-input', placeholder='e.g. disability accomodations.') }}
+
+  <hr class="my-10 col-span-2">
+
+  {{ form_row('is_submitted', class_='form-input', help='untick to save as a draft.') }}
 {% endblock %}
 
 {% block addtl_footer %}
