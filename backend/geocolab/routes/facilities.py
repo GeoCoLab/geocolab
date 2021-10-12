@@ -17,7 +17,7 @@ def new():
     form = FacilityForm(**form_defaults)
     if form.validate_on_submit():
         new_facility = Facility(name=form.name.data, notes=form.notes.data,
-                                org_id=form.org_id.data)
+                                org_id=form.org_id.data, other_analyses=form.other_analyses.data)
         db.session.add(new_facility)
         analyses = []
         for analysis in form.analyses.data:
@@ -53,6 +53,7 @@ def edit(facility_id):
         facility.name = form.name.data
         facility.notes = form.notes.data
         facility.org_id = form.org_id.data
+        facility.other_analyses = form.other_analyses.data
         analyses = []
         for analysis in form.analyses.data:
             analyses.append(Analysis.query.get(analysis))
