@@ -1,0 +1,33 @@
+// FONTS =============================================================
+@import url('https://fonts.googleapis.com/css2?family=Rubik&family=Karla');
+
+$body-font: 'Karla', sans-serif;
+$title-font: 'Rubik', sans-serif;
+
+$body-font-size: 12pt;
+
+// COLOURS ===========================================================
+
+$primary-lightest: var(--c1-lightest);
+$primary-light: var(--c1-light);
+$primary: var(--c1);
+$primary-dark: var(--c1-dark);
+$primary-darkest: var(--c1-darkest);
+$secondary-light: var(--c2-light);
+$secondary: var(--c2);
+$secondary-dark: var(--c2-dark);
+$secondary-darkest: var(--c2-darkest);
+$grey-1: var(--grey-1);
+$grey-2: var(--grey-2);
+$grey-3: var(--grey-3);
+
+// BREAKPOINTS =======================================================
+// standard breakpoints from tailwind
+// (https://tailwindcss.com/docs/breakpoints), just for use in SCSS
+$break-sm: 640px;
+$break-md: 768px;
+$break-lg: 1024px;
+$break-xl: 1280px;
+$break-2xl: 1536px;
+
+$breakpoints: $break-sm, $break-md, $break-lg, $break-xl, $break-2xl;

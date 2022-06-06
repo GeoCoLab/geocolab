@@ -1,0 +1,18 @@
+@import './vars';
+
+.detail-container {
+  & .detail-row {
+    display: grid;
+    grid-template-columns: minmax(15em, 10%) 1fr;
+    margin: 0.2em 0;
+    padding: 0.2em;
+
+    & .detail-row-header {
+      font-weight: bold;
+    }
+
+    &:nth-child(even) {
+      background-color: $primary-light;
+    }
+  }
+}

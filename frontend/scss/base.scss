@@ -1,0 +1,153 @@
+:root {
+  --c1-lightest: #fcfaf8;
+  --c1-light: #e2d1cf;
+  --c1: #9e7578;
+  --c1-dark: #51393b;
+  --c1-darkest: #100b0c;
+  --c2-light: #c5cfba;
+  --c2: #8c9e75;
+  --c2-dark: #465139;
+  --c2-darkest: #2a3022;
+  --grey-1: #f1f1f2;
+  --grey-2: #e7e8e9;
+  --grey-3: #d1d3d4;
+}
+
+@import './vars';
+
+// GENERAL ===========================================================
+body {
+  background-color: $grey-1;
+  color: $primary-darkest;
+  font-family: $body-font;
+  font-size: $body-font-size;
+}
+
+a {
+  color: $secondary-dark;
+
+  &:hover {
+    border-bottom: 2px solid $primary;
+  }
+}
+
+h1, h2, h3 {
+  font-family: $title-font;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 2.5em;
+
+  &.page-title {
+    margin-bottom: 0.5em;
+  }
+}
+
+h3 {
+  font-size: 2em;
+}
+
+// SPECIFIC ELEMENTS =================================================
+#header {
+  background-image: url('../assets/max-van-den-oetelaar-cAq3crYmgno-unsplash.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  height: 100px;
+  position: relative;
+  border-top: 2px solid $primary-dark;
+  border-bottom: 2px solid $primary-dark;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, $primary-darkest, transparent);
+    content: '';
+  }
+
+  & > * {
+    // this keeps the text on top of the gradient
+    position: relative;
+  }
+
+  & .site-title {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  & .site-subtitle {
+    // by default, don't display the subtitle
+    display: none;
+    line-height: 1;
+  }
+}
+
+
+#page-nav {
+  grid-template-areas: 'logo menu nav auth';
+  grid-template-columns: auto auto 1fr auto;
+  grid-gap: 1em;
+
+  & #nav-auth {
+    grid-area: auth;
+  }
+
+  & #nav-icon {
+    grid-area: logo;
+  }
+
+  & a {
+    border-bottom: 0;
+  }
+
+  .nav-item {
+    color: $primary-darkest;
+    border-bottom: 2px solid $grey-1;
+
+    &:hover {
+      border-bottom: 2px solid $secondary-dark;
+      transition: all .1s;
+    }
+
+    &--active {
+      color: $primary-darkest;
+      border-bottom: 2px solid $primary;
+    }
+  }
+}
+
+.main-content {
+  background-color: white;
+  width: 100vw;
+}
+
+@each $break in $breakpoints {
+  @media (min-width: $break) {
+    .main-content {
+      width: $break;
+    }
+  }
+}
+
+.page-grid {
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: auto auto 1fr;
+  grid-gap: 0;
+}
+
+.vue-feather {
+  color: $primary-dark;
+}
+
+.dropdown {
+
+}
