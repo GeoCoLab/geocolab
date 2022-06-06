@@ -16,7 +16,7 @@ class User(db.Model):
     password = db.Column(db.String(), nullable=False)
     family_name = db.Column(db.String(100), nullable=False)
     given_name = db.Column(db.String(100), nullable=False)
-    given_name_first = db.Column(db.Boolean)
+    given_name_first = db.Column(db.Boolean, nullable=False, server_default='1')
     created = db.Column(db.DateTime(), server_default=func.now())
     country = db.Column(countries_enum)
     role = db.Column(user_types_enum, server_default='researcher')

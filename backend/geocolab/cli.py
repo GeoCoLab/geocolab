@@ -36,7 +36,7 @@ def make_admin(email, pw):
     else:
         user = User.query.filter_by(email='admin').one_or_none()
         if not user:
-            user = User(email='admin', name='Admin', country='GB')
+            user = User(email='admin', given_name='Admin', family_name='Istrator', country='GB')
             user.password_set(pw)
             db.session.add(user)
             db.session.commit()
