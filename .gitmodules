@@ -1,0 +1,6 @@
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/geocolab/geocolab-web
+[submodule "backend"]
+	path = backend
+	url = https://github.com/geocolab/geocolab-api
