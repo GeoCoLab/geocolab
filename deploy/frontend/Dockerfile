@@ -1,9 +1,10 @@
 FROM node:latest
 
 COPY ./frontend /app/frontend
+COPY ./deploy/frontend/entrypoint /entrypoint
 
 WORKDIR /app/frontend
 
-RUN yarn
+ENTRYPOINT ["/bin/bash", "/entrypoint"]
 
-CMD yarn watch
+CMD yarn dev

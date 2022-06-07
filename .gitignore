@@ -1,5 +1,9 @@
+.idea/
+
 node_modules/
 
-__pycache__/
+deploy/volumes/
 
-.idea/
+**/*.egg-info/
+
+*.pyc

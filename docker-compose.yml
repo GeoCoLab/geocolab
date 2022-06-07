@@ -3,38 +3,20 @@ version: '3'
 volumes:
   local_db_data: {}
   local_db_data_backups: {}
+  app_data: {}
+
+networks:
+  geo_net:
+    ipam:
+      config:
+        - subnet: "10.0.12.1/24"
 
 services:
-  backend:
-    build:
-      context: .
-      dockerfile: ./deploy/backend/Dockerfile
-    depends_on:
-      - db
-    volumes:
-      - ./backend:/app/backend
-      - ./frontend:/app/frontend
-      - ./static:/app/static
-    env_file:
-      - ./deploy/backend/.env
-      - ./deploy/db/.env
-    ports:
-      - "8000:8000"
-
-  frontend:
-    build:
-      context: .
-      dockerfile: ./deploy/frontend/Dockerfile
-    depends_on:
-      - backend
-    volumes:
-      - ./frontend:/app/frontend
-      - ./static:/app/static
-    ports:
-      - "8080:8080"
-
   db:
     image: postgres:latest
+    networks:
+      geo_net:
+        ipv4_address: 10.0.12.2
     ports:
       - "5435:5432"
     volumes:
@@ -42,3 +24,121 @@ services:
       - local_db_data_backups:/backups
     env_file:
       - ./deploy/db/.env
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./deploy/backend/Dockerfile
+    networks:
+      geo_net:
+        ipv4_address: 10.0.12.3
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend
+      - app_data:/data
+    env_file:
+      - ./deploy/backend/.env
+      - ./deploy/db/.env
+      - ./deploy/shared.env
+    depends_on:
+      - db
+      - celery
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./deploy/frontend/Dockerfile
+    networks:
+      geo_net:
+        ipv4_address: 10.0.12.4
+    ports:
+      - "3000:3000"
+      - "24678:24678"
+    volumes:
+      - ./frontend:/app/frontend
+      - app_data:/data
+    environment:
+      API_HOST: "http://10.0.12.12"
+    env_file:
+      - ./deploy/shared.env
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    networks:
+      geo_net:
+        ipv4_address: 10.0.12.5
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - app_data:/data
+      - ./deploy/rabbitmq/config:/etc/rabbitmq
+    env_file:
+      - ./deploy/rabbitmq/.env
+
+  redis:
+    image: redis:alpine
+    networks:
+      geo_net:
+        ipv4_address: 10.0.12.6
+    ports:
+      - "6379:6379"
+    volumes:
+      - app_data:/data
+
+  celery:
+    build:
+      context: .
+      dockerfile: ./deploy/celery/Dockerfile
+    networks:
+      geo_net:
+        ipv4_address: 10.0.12.7
+    volumes:
+      - app_data:/data
+      - ./backend:/app/backend
+    env_file:
+      - ./deploy/rabbitmq/.env
+      - ./deploy/backend/.env
+      - ./deploy/shared.env
+    depends_on:
+      - rabbitmq
+      - redis
+
+  flower:
+    build:
+      context: .
+      dockerfile: ./deploy/flower/Dockerfile
+    networks:
+      geo_net:
+        ipv4_address: 10.0.12.8
+    ports:
+      - "5555:5555"
+    volumes:
+      - app_data:/data
+      - ./backend:/app/backend
+      - ./deploy/flower/config:/config
+    env_file:
+      - ./deploy/rabbitmq/.env
+      - ./deploy/backend/.env
+      - ./deploy/shared.env
+    depends_on:
+      - celery
+
+  lb:
+    build:
+      context: .
+      dockerfile: ./deploy/lb/Dockerfile
+    networks:
+      geo_net:
+        ipv4_address: 10.0.12.12
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - frontend
+      - celery
+
