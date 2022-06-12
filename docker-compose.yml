@@ -17,8 +17,6 @@ services:
     networks:
       geo_net:
         ipv4_address: 10.0.12.2
-    ports:
-      - "5435:5432"
     volumes:
       - local_db_data:/var/lib/postgresql/data
       - local_db_data_backups:/backups
@@ -32,8 +30,6 @@ services:
     networks:
       geo_net:
         ipv4_address: 10.0.12.3
-    ports:
-      - "8000:8000"
     volumes:
       - ./backend:/app/backend
       - app_data:/data
@@ -52,9 +48,6 @@ services:
     networks:
       geo_net:
         ipv4_address: 10.0.12.4
-    ports:
-      - "3000:3000"
-      - "24678:24678"
     volumes:
       - ./frontend:/app/frontend
       - app_data:/data
@@ -71,9 +64,6 @@ services:
     networks:
       geo_net:
         ipv4_address: 10.0.12.5
-    ports:
-      - "15672:15672"
-      - "5672:5672"
     volumes:
       - app_data:/data
       - ./deploy/rabbitmq/config:/etc/rabbitmq
@@ -85,8 +75,6 @@ services:
     networks:
       geo_net:
         ipv4_address: 10.0.12.6
-    ports:
-      - "6379:6379"
     volumes:
       - app_data:/data
 
@@ -115,8 +103,6 @@ services:
     networks:
       geo_net:
         ipv4_address: 10.0.12.8
-    ports:
-      - "5555:5555"
     volumes:
       - app_data:/data
       - ./backend:/app/backend
@@ -135,8 +121,6 @@ services:
     networks:
       geo_net:
         ipv4_address: 10.0.12.12
-    ports:
-      - "80:80"
     depends_on:
       - backend
       - frontend
